@@ -170,3 +170,33 @@ body {
   border: 1px solid #ddd;
   cursor: pointer;
 }
+
+.canvas-component {
+  position: relative;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  margin: 10px;
+  background: white;
+  transition: box-shadow 0.2s;
+}
+.canvas-component:hover {
+  box-shadow: 0 0 5px #999;
+}
+.canvas-component .delete-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff5c5c;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  cursor: pointer;
+  display: none;
+}
+.canvas-component:hover .delete-btn {
+  display: block;
+}
