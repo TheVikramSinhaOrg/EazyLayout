@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Drag-and-drop dashboard builder to design custom admin interfaces, analytics panels, and dynamic web layouts with no code."/>
+  <meta name="keywords" content="dashboard builder, drag and drop web builder, admin panel creator, chart generator, no-code layout editor"/>
+  <meta name="author" content="TheHardHit" />
+  <meta name="robots" content="index, follow" />
+  <title>Dashboard Builder – No Code Layout & Chart Designer</title>
+
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+  <link rel="stylesheet" href="styles/animations.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div id="app-container">
+
+    <!-- Top Bar -->
+<header class="top-bar" role="banner">
+  <div class="logo">
+    <h1>📊 Dashboard Builder</h1>
+    <small>Design, Customize, Export — Visually</small>
+  </div>
+
+  <nav class="top-controls" aria-label="Editor Actions">
+    <button id="undo-btn" title="Undo"><i class="fas fa-rotate-left"></i></button>
+    <button id="redo-btn" title="Redo"><i class="fas fa-rotate-right"></i></button>
+    <button id="preview-toggle" title="Toggle Preview">Preview</button>
+    <button id="save-project-btn" class="ghost-btn" title="Download project as JSON">Save</button>
+    <label for="load-project-input" class="ghost-btn" title="Upload project JSON">Upload<input type="file" id="load-project-input" accept=".json" hidden /></label>
+    <button id="export-btn" class="primary-btn" title="Export HTML">Export</button>
+    <a href="https://buymeacoffee.com/yourprofile" target="_blank" class="donate-btn pulse" title="Support this project ❤️">❤️ Support</a>
+  </nav>
+</header>
+
+    <!-- Sidebar Left - Component Library -->
+    <aside class="sidebar sidebar-left" aria-label="Component Library">
+      <h2>🧩 Components</h2>
+
+      <section>
+        <h3>📄 Text</h3>
+        <div class="component-item" draggable="true" data-type="heading">Heading (H1–H3)</div>
+        <div class="component-item" draggable="true" data-type="text">Paragraph</div>
+        <div class="component-item" draggable="true" data-type="label">Label / Small Text</div>
+        <div class="component-item" draggable="true" data-type="stat-title">Stat Title</div>
+      </section>
+
+      <section>
+        <h3>📐 Layout</h3>
+        <div class="component-item" draggable="true" data-type="container">Container</div>
+        <div class="component-item" draggable="true" data-type="card">Card</div>
+        <div class="component-item" draggable="true" data-type="two-column">Two Column</div>
+        <div class="component-item" draggable="true" data-type="three-column">Three Column</div>
+        <div class="component-item" draggable="true" data-type="flexbox">Flex Layout</div>
+        <div class="component-item" draggable="true" data-type="spacer">Spacer</div>
+        <div class="component-item" draggable="true" data-type="divider">Divider Line</div>
+      </section>
+
+      <section>
+        <h3>🔘 UI Elements</h3>
+        <div class="component-item" draggable="true" data-type="button">Button</div>
+        <div class="component-item" draggable="true" data-type="toggle">Toggle Switch</div>
+        <div class="component-item" draggable="true" data-type="dropdown">Dropdown</div>
+        <div class="component-item" draggable="true" data-type="search">Search Input</div>
+        <div class="component-item" draggable="true" data-type="date-picker">Date Range Picker</div>
+        <div class="component-item" draggable="true" data-type="tabs">Tabs</div>
+        <div class="component-item" draggable="true" data-type="breadcrumbs">Breadcrumbs</div>
+        <div class="component-item" draggable="true" data-type="pagination">Pagination</div>
+      </section>
+
+      <section>
+        <h3>📊 Data</h3>
+        <div class="component-item" draggable="true" data-type="stat-block">Stat Block</div>
+        <div class="component-item" draggable="true" data-type="kpi-card">KPI Card</div>
+        <div class="component-item" draggable="true" data-type="notification">Notification Box</div>
+        <div class="component-item" draggable="true" data-type="progress">Progress Bar</div>
+        <div class="component-item" draggable="true" data-type="activity-log">Timeline / Activity</div>
+        <div class="component-item" draggable="true" data-type="profile-card">Profile Card</div>
+      </section>
+
+      <section>
+        <h3>🗂 Tables</h3>
+        <div class="component-item" draggable="true" data-type="table-basic">Basic Table</div>
+        <div class="component-item" draggable="true" data-type="table-sortable">Sortable Table</div>
+      </section>
+
+      <section>
+        <h3>📈 Charts</h3>
+        <div class="component-item" draggable="true" data-type="bar-chart">Bar Chart</div>
+        <div class="component-item" draggable="true" data-type="line-chart">Line Chart</div>
+        <div class="component-item" draggable="true" data-type="area-chart">Area Chart</div>
+        <div class="component-item" draggable="true" data-type="pie-chart">Pie Chart</div>
+        <div class="component-item" draggable="true" data-type="donut-chart">Donut Chart</div>
+        <div class="component-item" draggable="true" data-type="scatter-plot">Scatter Plot</div>
+        <div class="component-item" draggable="true" data-type="heatmap">Heatmap</div>
+        <div class="component-item" draggable="true" data-type="bubble-chart">Bubble Chart</div>
+        <div class="component-item" draggable="true" data-type="radar-chart">Radar Chart</div>
+        <div class="component-item" draggable="true" data-type="treemap">Treemap</div>
+        <div class="component-item" draggable="true" data-type="sankey">Sankey Diagram</div>
+        <div class="component-item" draggable="true" data-type="arc-diagram">Arc Diagram</div>
+        <div class="component-item" draggable="true" data-type="network-graph">Network Graph</div>
+        <div class="component-item" draggable="true" data-type="sunburst">Sunburst</div>
+      </section>
+
+      <section>
+        <h3>🖼 Media & Shapes</h3>
+        <div class="component-item" draggable="true" data-type="image">Image Placeholder</div>
+        <div class="component-item" draggable="true" data-type="profile-pic">Profile Picture</div>
+        <div class="component-item" draggable="true" data-type="rectangle">Rectangle</div>
+        <div class="component-item" draggable="true" data-type="circle">Circle</div>
+        <div class="component-item" draggable="true" data-type="video">Video Embed</div>
+      </section>
+
+    </aside>
+
+    <!-- Canvas Center -->
+    <main id="canvas-container" aria-label="Editor Canvas">
+      <div id="canvas" class="droppable-area">
+        <p class="empty-hint">Drag components here to start building your dashboard...</p>
+      </div>
+    </main>
+    
+    <!-- Sidebar Right - Style Panel -->
+    <aside class="sidebar sidebar-right" id="style-panel" aria-label="Style Controls">
+      <!-- Ad Container -->
+    <div id="ad-container" role="complementary" aria-label="Sponsored Ad Area">
+      <!-- Placeholder for AdSense or banner -->
+      <div class="ad-box">
+        <p>Ad Space</p>
+        <!-- You can replace this block with your actual ad script -->
+      </div>
+    </div>
+
+      <h2>🎨 Style & Animation</h2>
+      <div id="style-controls">
+        <!-- Populated dynamically -->
+      </div>
+    </aside>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="EazyLayout is a responsive web layout builder that allows users to create dashboards and interfaces with drag-and-drop components, full style control, and HTML export.">
+  <meta name="keywords" content="drag and drop builder, dashboard layout, html builder, admin UI, canvas layout editor, no-code builder, web builder, eazylayout">
+  <meta name="author" content="EazyLayout Team">
+  <title>EazyLayout – Drag & Drop Dashboard Builder</title>
+
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+  <link rel="stylesheet" href="styles/animations.css">
+</head>
+<body>
+  <header class="top-bar">
+    <div class="logo">
+      <h1>EazyLayout</h1>
+    </div>
+    <div class="top-controls">
+      <button class="primary-btn" id="exportBtn">Export HTML</button>
+      <button class="ghost-btn" id="saveJsonBtn">Save JSON</button>
+      <input type="file" id="loadJsonInput" style="display:none;">
+      <button class="ghost-btn" id="loadJsonBtn">Load JSON</button>
+      <button class="ghost-btn" id="previewToggle">Live Preview</button>
+      <a class="donate-btn" href="https://buymeacoffee.com/eazylayout" target="_blank">Donate ♥</a>
+    </div>
+  </header>
+
+  <main class="builder-layout">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar" id="componentSidebar">
+      <!-- Populated dynamically -->
+    </aside>
+
+    <!-- CENTER CANVAS -->
+    <section class="canvas-area" id="canvas">
+      <p style="text-align:center;color:#888;font-size:0.95rem;margin-top:40px;">Drop components here to start building</p>
+    </section>
+
+    <!-- RIGHT PANEL -->
+    <aside class="style-panel" id="stylePanel">
+      <div class="style-header">Style Panel</div>
+      <div id="styleControls">Select a component to edit its style.</div>
+      <div class="ad-space">Advertisement</div>
+    </aside>
+  </main>
+
+  <script type="module">
+    import { AppController } from './js/controller/AppController.js';
+    import { DragDropController } from './js/controller/DragDropController.js';
+    import { ExportController } from './js/controller/ExportController.js';
+    import { StyleController } from './js/controller/StyleController.js';
+    import { SidebarView } from './js/view/SidebarView.js';
+
+    const canvas = document.getElementById('canvas');
+    const stylePanel = document.getElementById('stylePanel');
+    const sidebar = document.getElementById('componentSidebar');
+    const exportBtn = document.getElementById('exportBtn');
+    const previewToggle = document.getElementById('previewToggle');
+    const saveJsonBtn = document.getElementById('saveJsonBtn');
+    const loadJsonBtn = document.getElementById('loadJsonBtn');
+    const loadJsonInput = document.getElementById('loadJsonInput');
+
+    const app = new AppController(canvas, stylePanel);
+    SidebarView.init(sidebar);
+    DragDropController.init(app);
+
+    exportBtn.addEventListener('click', () => {
+      ExportController.exportHTML(app.getState());
+    });
+
+    saveJsonBtn.addEventListener('click', () => {
+      ExportController.exportJSON(app.getState());
+    });
+
+    loadJsonBtn.addEventListener('click', () => loadJsonInput.click());
+    loadJsonInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+          const json = JSON.parse(evt.target.result);
+          app.loadState(json);
+        };
+        reader.readAsText(file);
+      }
+    });
+
+    previewToggle.addEventListener('click', () => {
+      document.body.classList.toggle('preview-mode');
+    });
+
+    window.addEventListener('beforeunload', function (e) {
+      e.preventDefault();
+      e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+    });
+  </script>
+
+  <script src="libs/interact.min.js"></script>
+  <script src="libs/sortable.min.js"></script>
+  <script src="libs/FileSaver.min.js"></script>
+</body>
+</html>
