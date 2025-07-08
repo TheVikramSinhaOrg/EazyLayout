@@ -11,7 +11,7 @@ export class AppController {
     this.canvas = canvas;
     this.stylePanel = stylePanel;
     this.state = new StateModel();
-    SidebarView.bindToggleEvents();
+    //SidebarView.bindToggleEvents(); // no longer needed
   }
 
   addComponent(component) {
