@@ -1,76 +1,71 @@
-// DragDropController.js
+// js/controller/DragDropController.js
 
-export const DragDropController = {
-  init(app) {
-    // Enable dragging for all .component-item
-    interact('.component-item').draggable({
-      inertia: true,
-      autoScroll: true,
-      onstart(event) {
-        event.interaction.element = event.target;
-      }
+export class DragDropController {
+  static init(appInstance) {
+    const canvas = document.getElementById('canvas');
+    let draggedComponent = null;
+
+    // Set all component items as draggable
+    document.querySelectorAll('.component-item').forEach(el => {
+      el.addEventListener('dragstart', (e) => {
+        draggedComponent = el.textContent.trim();
+        e.dataTransfer.setData('text/plain', draggedComponent);
+      });
     });
 
-    // Enable dropping into the canvas
-    interact('#canvas').dropzone({
-      accept: '.component-item',
-      overlap: 0.75,
-      ondrop(event) {
-        const type = event.relatedTarget.textContent.trim();
-        const newEl = DragDropController.createComponent(type);
-        if (newEl) {
-          event.target.appendChild(newEl);
-          app.selectComponent(newEl);
-        }
-      }
+    // Allow drop on canvas
+    canvas.addEventListener('dragover', (e) => {
+      e.preventDefault();
     });
-  },
 
-  createComponent(type) {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('component-wrapper');
-    wrapper.setAttribute('data-type', type);
+    canvas.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (!draggedComponent) return;
 
+      const newElement = DragDropController.createComponent(draggedComponent);
+      newElement.classList.add('draggable');
+
+      // Append the new component
+      canvas.appendChild(newElement);
+
+      // Reset
+      draggedComponent = null;
+    });
+  }
+
+  static createComponent(type) {
     const el = document.createElement('div');
-    el.classList.add('component');
-    el.setAttribute('contenteditable', 'true');
+    el.classList.add('canvas-component');
 
+    // Add inner content based on type
     switch (type) {
       case 'Text':
-        el.textContent = 'Editable Text';
+        el.innerHTML = '<p contenteditable="true">Edit text</p>';
         break;
       case 'Image':
-        el.innerHTML = '<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg" style="background:#eee;"><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#888" font-size="16">Placeholder Image</text></svg>';
+        el.innerHTML = '<img src="https://via.placeholder.com/150" alt="Placeholder Image">';
         break;
       case 'Button':
         el.innerHTML = '<button>Click Me</button>';
         break;
       case 'Line Chart':
-        el.innerHTML = '<div style="width:100%;height:200px;background:#f8fafc;text-align:center;line-height:200px;color:#999;">[Line Chart]</div>';
-        break;
       case 'Bar Chart':
-        el.innerHTML = '<div style="width:100%;height:200px;background:#f8fafc;text-align:center;line-height:200px;color:#999;">[Bar Chart]</div>';
+        el.innerHTML = `<div style="width:100%;height:150px;background:#eee;text-align:center;line-height:150px;">[ ${type} Placeholder ]</div>`;
         break;
       default:
-        el.textContent = type;
+        el.innerText = type;
     }
 
-    // Add hover-delete icon
-    const delBtn = document.createElement('span');
-    delBtn.classList.add('delete-btn');
-    delBtn.textContent = '✕';
-    delBtn.title = 'Remove';
-    delBtn.onclick = () => wrapper.remove();
-
-    wrapper.appendChild(delBtn);
-    wrapper.appendChild(el);
-
-    wrapper.addEventListener('click', (e) => {
-      e.stopPropagation();
-      document.querySelectorAll('.component-wrapper.selected').forEach(c => c.classList.remove('selected'));
-      wrapper.classList.add('selected');
+    // Add delete-on-hover icon
+    const deleteBtn = document.createElement('span');
+    deleteBtn.innerHTML = '✕';
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.addEventListener('click', () => {
+      el.remove();
     });
 
-    return wrapper;
+    el.appendChild(deleteBtn);
+
+    return el;
   }
-};
+}
